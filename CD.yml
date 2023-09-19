@@ -26,6 +26,12 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
+- task: DownloadPipelineArtifact@2
+  inputs:
+    buildType: 'current'
+    artifactName: 'Paperless'
+    targetPath: '$(Pipeline.Workspace)'
+
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure for Students(cdf4ea9a-0027-4678-aee6-c9dbcc54a1ea)'
