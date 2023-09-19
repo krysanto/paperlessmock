@@ -10,9 +10,13 @@ variables:
 steps:
 - task: DownloadPipelineArtifact@2
   inputs:
-    buildType: 'current'
-    artifact: 'Paperless'
+    buildType: 'specific'
+    project: 'Paperless' # Replace with your project name
+    definition: 'Main CI' # Replace with your CI pipeline ID
+    buildVersionToDownload: 'latest'
+    artifactName: 'Paperless'
     targetPath: '$(System.ArtifactsDirectory)'
+
 
 - task: AzureWebApp@1
   inputs:
