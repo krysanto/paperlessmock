@@ -38,3 +38,9 @@ steps:
     slotName: 'production'
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
+    appSettings: 
+- task: DownloadPipelineArtifact@2
+  inputs:
+    buildType: 'current'
+    artifactName: 'Paperless'
+    targetPath: '$(Pipeline.Workspace)'
