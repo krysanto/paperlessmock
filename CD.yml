@@ -14,20 +14,11 @@ variables:
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: DownloadBuildArtifacts@1
+- task: DownloadPipelineArtifact@2
   inputs:
     buildType: 'current'
-    downloadType: 'single'
-    artifactName: 'Paperless'
-    downloadPath: '$(System.ArtifactsDirectory)'
-    checkDownloadedFiles: true
-
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
+    artifact: 'Paperless'
+    targetPath: '$(System.ArtifactsDirectory)'
 
 - task: AzureWebApp@1
   inputs:
@@ -37,6 +28,6 @@ steps:
     deployToSlotOrASE: true
     resourceGroupName: 'Paperless'
     slotName: 'production'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    package: '$(System.DefaultWorkingDirectory)/Paperless/WebApp.zip'
     deploymentMethod: 'auto'
     appSettings: 
