@@ -8,6 +8,12 @@ trigger:
 
 pool: MichiPC
 
+resources:
+  pipelines:
+  - pipeline: CIPipeline
+    project: SWKOM
+    source: Main CI
+
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
@@ -19,14 +25,11 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-
-- task: DownloadBuildArtifacts@1
+- task: DownloadPipelineArtifact@2
   inputs:
     buildType: 'current'
-    downloadType: 'single'
     artifactName: 'Paperless'
-    downloadPath: $(Pipeline.Workspace)
-    checkDownloadedFiles: true
+    targetPath: '$(Pipeline.Workspace)'
 
 - task: AzureWebApp@1
   inputs:
@@ -39,8 +42,3 @@ steps:
     package: '$(System.DefaultWorkingDirectory)/**/*.zip'
     deploymentMethod: 'auto'
     appSettings: 
-- task: DownloadPipelineArtifact@2
-  inputs:
-    buildType: 'current'
-    artifactName: 'Paperless'
-    targetPath: '$(Pipeline.Workspace)'
