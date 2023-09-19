@@ -30,7 +30,7 @@ steps:
   inputs:
     buildType: 'current'
     artifactName: 'Paperless'
-    targetPath: '$(Pipeline.Workspace)'
+    targetPath: '$(CIPipeline.Workspace)'
 
 - task: AzureWebApp@1
   inputs:
