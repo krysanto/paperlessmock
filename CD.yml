@@ -17,15 +17,10 @@ steps:
     artifactName: 'Paperless'
     targetPath: '$(System.ArtifactsDirectory)'
 
-
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure for Students(cdf4ea9a-0027-4678-aee6-c9dbcc54a1ea)'
-    appType: 'webApp'
+    appType: 'webAppLinux'
     appName: 'PaperlessSWKOM'
-    deployToSlotOrASE: true
-    resourceGroupName: 'Paperless'
-    slotName: 'production'
-    package: '$(System.ArtifactsDirectory)/WebApp.zip'
-    deploymentMethod: 'auto'
-    appSettings:
+    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    runtimeStack: 'DOTNETCORE|7.0'
