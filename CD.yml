@@ -25,11 +25,6 @@ steps:
 - task: NuGetCommand@2
   inputs:
     restoreSolution: '$(solution)'
-- task: DownloadPipelineArtifact@2
-  inputs:
-    buildType: 'current'
-    artifactName: 'Paperless'
-    targetPath: '$(Pipeline.Workspace)'
 
 - task: AzureWebApp@1
   inputs:
