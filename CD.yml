@@ -8,12 +8,6 @@ trigger:
 
 pool: MichiPC
 
-resources:
-  pipelines:
-  - pipeline: CIPipeline
-    project: SWKOM
-    source: Main CI
-
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
