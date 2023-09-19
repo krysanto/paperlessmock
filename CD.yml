@@ -26,12 +26,13 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- task: DownloadBuildArtifacts@0
+- task: DownloadBuildArtifacts@1
   inputs:
     buildType: 'current'
     downloadType: 'single'
     artifactName: 'Paperless'
-    downloadPath: '$(System.ArtifactsDirectory)' 
+    downloadPath: '$(System.ArtifactsDirectory)'
+    checkDownloadedFiles: true
 
 - task: AzureWebApp@1
   inputs:
