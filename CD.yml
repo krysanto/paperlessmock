@@ -25,7 +25,7 @@ steps:
     buildType: 'current'
     downloadType: 'single'
     artifactName: 'Paperless'
-    downloadPath: $(build.artifactStagingDirectory)\WebApp.zip
+    downloadPath: $(Pipeline.Workspace)
     checkDownloadedFiles: true
 
 - task: AzureWebApp@1
