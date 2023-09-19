@@ -34,6 +34,6 @@ steps:
 
 - task: PublishBuildArtifacts@1
   inputs:
-    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    PathtoPublish: '$(Pipeline.Workspace)'
     ArtifactName: 'Paperless'
     publishLocation: 'Container'
