@@ -26,11 +26,12 @@ steps:
   inputs:
     restoreSolution: '$(solution)'
 
-- task: DownloadPipelineArtifact@2
+- task: DownloadBuildArtifacts@0
   inputs:
     buildType: 'current'
+    downloadType: 'single'
     artifactName: 'Paperless'
-    targetPath: '$(CIPipeline.Workspace)'
+    downloadPath: '$(System.ArtifactsDirectory)' 
 
 - task: AzureWebApp@1
   inputs:
