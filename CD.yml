@@ -22,5 +22,5 @@ steps:
     azureSubscription: 'Azure for Students(cdf4ea9a-0027-4678-aee6-c9dbcc54a1ea)'
     appType: 'webAppLinux'
     appName: 'PaperlessSWKOM'
-    package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    package: '$(System.ArtifactsDirectory)/WebApp.zip'
     runtimeStack: 'DOTNETCORE|7.0'
