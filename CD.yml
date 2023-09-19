@@ -1,15 +1,9 @@
-# ASP.NET Core (.NET Framework)
-# Build and test ASP.NET Core projects targeting the full .NET Framework.
-# Add steps that publish symbols, save build artifacts, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
-
 trigger:
 - main
 
 pool: MichiPC
 
 variables:
-  solution: '**/*.sln'
   buildPlatform: 'Any CPU'
   buildConfiguration: 'Release'
 
@@ -28,6 +22,6 @@ steps:
     deployToSlotOrASE: true
     resourceGroupName: 'Paperless'
     slotName: 'production'
-    package: '$(System.DefaultWorkingDirectory)/Paperless/WebApp.zip'
+    package: '$(System.ArtifactsDirectory)/Paperless/WebApp.zip'
     deploymentMethod: 'auto'
-    appSettings: 
+    appSettings:
