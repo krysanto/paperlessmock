@@ -20,7 +20,7 @@ steps:
 - task: AzureWebApp@1
   inputs:
     azureSubscription: 'Azure for Students(cdf4ea9a-0027-4678-aee6-c9dbcc54a1ea)'
-    appType: 'webAppLinux'
+    appType: 'webApp'
     appName: 'PaperlessSWKOM'
     package: '$(System.ArtifactsDirectory)/WebApp.zip'
     runtimeStack: 'DOTNETCORE|7.0'
