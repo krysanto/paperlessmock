@@ -34,6 +34,6 @@ steps:
     deployToSlotOrASE: true
     resourceGroupName: 'Paperless'
     slotName: 'production'
-    package: '$(System.DefaultWorkingDirectory)/Paperless'
+    package: '$(System.DefaultWorkingDirectory)/Paperless/a/WebApp.zip'
     deploymentMethod: 'auto'
     appSettings: 
