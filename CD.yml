@@ -22,10 +22,6 @@ variables:
 steps:
 - task: NuGetToolInstaller@1
 
-- task: NuGetCommand@2
-  inputs:
-    restoreSolution: '$(solution)'
-
 - task: DownloadBuildArtifacts@1
   inputs:
     buildType: 'current'
@@ -33,6 +29,11 @@ steps:
     artifactName: 'Paperless'
     downloadPath: '$(System.ArtifactsDirectory)'
     checkDownloadedFiles: true
+
+- task: NuGetCommand@2
+  inputs:
+    restoreSolution: '$(solution)'
+
 
 - task: AzureWebApp@1
   inputs:
