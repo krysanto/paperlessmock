@@ -1,4 +1,5 @@
 trigger:
+
 - main
 
 pool:
@@ -18,10 +19,14 @@ steps:
     artifactName: 'Paperless'
     targetPath: '$(System.ArtifactsDirectory)'
 
-- task: AzureWebApp@1
+- task: AzureRmWebAppDeployment@4
   inputs:
+    ConnectionType: 'AzureRM'
     azureSubscription: 'Azure for Students(cdf4ea9a-0027-4678-aee6-c9dbcc54a1ea)'
     appType: 'webAppLinux'
-    appName: 'Paperlessswkom'
-    package: '$(System.ArtifactsDirectory)/WebApp.zip'
-    runtimeStack: 'DOTNETCORE|7.0'
+    WebAppName: 'Paperlessswkom'
+    deployToSlotOrASE: true
+    ResourceGroupName: 'Paperless'
+    SlotName: 'production'
+    packageForLinux: '$(System.ArtifactsDirectory)/**/*.zip'
+    RuntimeStack: 'DOTNETCORE|7.0'
