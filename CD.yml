@@ -26,6 +26,6 @@ steps:
     deployToSlotOrASE: true
     resourceGroupName: 'Paperless'
     slotName: 'production'
-    package: '$(System.ArtifactsDirectory)/**/*.zip'
+    package: '$(System.ArtifactsDirectory)/WebApp.zip'
     runtimeStack: 'DOTNETCORE|7.0'
 
