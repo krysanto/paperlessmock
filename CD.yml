@@ -26,6 +26,7 @@ steps:
     WebAppName: 'Paperlessswkom'
     package: '$(System.ArtifactsDirectory)/**/*.zip'
     runtimeStack: 'DOTNETCORE|7.0'
+    ResourceGroupName: 'Paperless'
     deployToSlotOrASE: true
     SlotName: 'production'
     enableCustomDeployment: true
