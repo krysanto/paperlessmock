@@ -18,6 +18,26 @@ steps:
     artifactName: 'Paperless'
     targetPath: '$(System.ArtifactsDirectory)'
 
+- powershell: |
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    $zipPath = "$(build.artifactStagingDirectory)\WebApp.zip"
+    $extractPath = "$(build.artifactStagingDirectory)\Extracted"
+    System.IO.Compression.ZipFile::ExtractToDirectory($zipPath, $extractPath)
+  displayName: 'Unzip WebApp.zip'
+
+- powershell: |
+    $sourcePath = 'WebApp\Content\D_C\a\1\s\Paperless\obj\Release\net7.0\PubTmp\Out'
+    $destPath = '.'
+    Copy-Item -Path $sourcePath -Destination $destPath -Recurse -Force
+  displayName: 'Copy Files from Source to Destination'
+
+- powershell: |
+    $sourceDirectory = "."
+    $destinationZipFile = "Release.zip"
+    Add-Type -Assembly "System.IO.Compression.FileSystem"
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($sourceDirectory, $destinationZipFile)
+  displayName: 'Rezip lol'
+
 - task: AzureRmWebAppDeployment@4
   inputs:
     ConnectionType: 'AzureRM'
@@ -27,7 +47,7 @@ steps:
     deployToSlotOrASE: true
     ResourceGroupName: 'Paperless'
     SlotName: 'production'
-    packageForLinux: '$(System.ArtifactsDirectory)/**/*.zip'
+    packageForLinux: '$(System.ArtifactsDirectory)/**/Release.zip'
     RuntimeStack: 'DOTNETCORE|7.0'
     enableCustomDeployment: true
     DeploymentType: 'zipDeploy'
