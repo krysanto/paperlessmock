@@ -20,13 +20,13 @@ steps:
 
 - powershell: |
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $zipPath = "$(build.artifactStagingDirectory)\WebApp.zip"
-    $extractPath = "$(build.artifactStagingDirectory)\Extracted"
+    $zipPath = "$(System.ArtifactsDirectory)\WebApp.zip"
+    $extractPath = ".\Extracted"
     System.IO.Compression.ZipFile::ExtractToDirectory($zipPath, $extractPath)
   displayName: 'Unzip WebApp.zip'
 
 - powershell: |
-    $sourcePath = 'WebApp\Content\D_C\a\1\s\Paperless\obj\Release\net7.0\PubTmp\Out'
+    $sourcePath = '.\Extracted\WebApp\Content\D_C\a\1\s\Paperless\obj\Release\net7.0\PubTmp\Out'
     $destPath = '.'
     Copy-Item -Path $sourcePath -Destination $destPath -Recurse -Force
   displayName: 'Copy Files from Source to Destination'
