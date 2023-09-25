@@ -24,12 +24,8 @@ steps:
     azureSubscription: 'Azure for Students(cdf4ea9a-0027-4678-aee6-c9dbcc54a1ea)'
     appType: 'webAppLinux'
     WebAppName: 'Paperlessswkom'
-    package: '$(System.ArtifactsDirectory)/**/*.zip'
-    runtimeStack: 'DOTNETCORE|7.0'
-    ResourceGroupName: 'Paperless'
     deployToSlotOrASE: true
+    ResourceGroupName: 'Paperless'
     SlotName: 'production'
-    enableCustomDeployment: true
-
-    
-
+    packageForLinux: '$(System.ArtifactsDirectory)/**/*.zip'
+    RuntimeStack: 'DOTNETCORE|7.0'
