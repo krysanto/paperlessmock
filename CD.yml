@@ -25,7 +25,7 @@ steps:
   displayName: 'Unzip WebApp.zip'
 
 - powershell: |
-    $sourcePath = '$(System.ArtifactsDirectory)\Extracted\WebApp\Content\D_C\a\1\s\Paperless\obj\Release\net7.0\PubTmp\Out'
+    $sourcePath = '$(System.ArtifactsDirectory)\Extracted\Content\D_C\a\1\s\Paperless\obj\Release\net7.0\PubTmp\Out'
     $destPath = '$(System.ArtifactsDirectory)\Test'
     Copy-Item -Path $sourcePath -Destination $destPath -Recurse -Force
   displayName: 'Copy Files from Source to Destination'
