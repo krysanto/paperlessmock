@@ -32,7 +32,7 @@ steps:
 
 - powershell: |
     $sourceDirectory = "$(System.ArtifactsDirectory)\Test"
-    $destinationZipFile = "$(System.ArtifactsDirectory)\Release.zip"
+    $destinationZipFile = "$(System.ArtifactsDirectory)\WebApp.zip"
     Add-Type -Assembly "System.IO.Compression.FileSystem"
     [System.IO.Compression.ZipFile]::CreateFromDirectory($sourceDirectory, $destinationZipFile)
   displayName: 'Rezip lol'
@@ -46,7 +46,7 @@ steps:
     deployToSlotOrASE: true
     ResourceGroupName: 'Paperless'
     SlotName: 'production'
-    packageForLinux: '$(System.ArtifactsDirectory)/**/Release.zip'
+    packageForLinux: '$(System.ArtifactsDirectory)/**/*.zip'
     RuntimeStack: 'DOTNETCORE|7.0'
     enableCustomDeployment: true
     DeploymentType: 'zipDeploy'
