@@ -55,5 +55,3 @@ steps:
     SlotName: 'production'
     packageForLinux: '$(System.ArtifactsDirectory)/**/*.zip'
     RuntimeStack: 'DOTNETCORE|7.0'
-    enableCustomDeployment: true
-    DeploymentType: 'zipDeploy'
