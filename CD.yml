@@ -21,19 +21,19 @@ steps:
 - powershell: |
     Add-Type -AssemblyName System.IO.Compression.FileSystem
     $zipPath = "$(System.ArtifactsDirectory)\WebApp.zip"
-    $extractPath = ".\Extracted"
+    $extractPath = "$(System.ArtifactsDirectory)\Extracted"
     System.IO.Compression.ZipFile::ExtractToDirectory($zipPath, $extractPath)
   displayName: 'Unzip WebApp.zip'
 
 - powershell: |
-    $sourcePath = '.\Extracted\WebApp\Content\D_C\a\1\s\Paperless\obj\Release\net7.0\PubTmp\Out'
-    $destPath = '.'
+    $sourcePath = '$(System.ArtifactsDirectory)\Extracted\WebApp\Content\D_C\a\1\s\Paperless\obj\Release\net7.0\PubTmp\Out'
+    $destPath = '$(System.ArtifactsDirectory)\Test'
     Copy-Item -Path $sourcePath -Destination $destPath -Recurse -Force
   displayName: 'Copy Files from Source to Destination'
 
 - powershell: |
-    $sourceDirectory = "."
-    $destinationZipFile = "Release.zip"
+    $sourceDirectory = "$(System.ArtifactsDirectory)\Test"
+    $destinationZipFile = "$(System.ArtifactsDirectory)\Release.zip"
     Add-Type -Assembly "System.IO.Compression.FileSystem"
     [System.IO.Compression.ZipFile]::CreateFromDirectory($sourceDirectory, $destinationZipFile)
   displayName: 'Rezip lol'
