@@ -31,6 +31,13 @@ steps:
   displayName: 'Copy Files from Source to Destination'
 
 - powershell: |
+    $zipPath = "$(System.ArtifactsDirectory)\WebApp.zip"
+    if (Test-Path $zipPath) {
+        Remove-Item -Path $zipPath -Force
+    }
+  displayName: 'Remove WebApp.zip'
+
+- powershell: |
     $sourceDirectory = "$(System.ArtifactsDirectory)\Test"
     $destinationZipFile = "$(System.ArtifactsDirectory)\WebApp.zip"
     Add-Type -Assembly "System.IO.Compression.FileSystem"
