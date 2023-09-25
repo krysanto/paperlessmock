@@ -19,10 +19,9 @@ steps:
     targetPath: '$(System.ArtifactsDirectory)'
 
 - powershell: |
-    Add-Type -AssemblyName System.IO.Compression.FileSystem
     $zipPath = "$(System.ArtifactsDirectory)\WebApp.zip"
     $extractPath = "$(System.ArtifactsDirectory)\Extracted"
-    System.IO.Compression.ZipFile::ExtractToDirectory($zipPath, $extractPath)
+    Expand-Archive -Path $zipPath -DestinationPath $extractPath
   displayName: 'Unzip WebApp.zip'
 
 - powershell: |
