@@ -2,7 +2,7 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: 'ubuntu-latest'
 
 variables:
   buildPlatform: 'Any CPU'
@@ -17,32 +17,6 @@ steps:
     buildVersionToDownload: 'latest'
     artifactName: 'Paperless'
     targetPath: '$(System.ArtifactsDirectory)'
-
-- powershell: |
-    $zipPath = "$(System.ArtifactsDirectory)\WebApp.zip"
-    $extractPath = "$(System.ArtifactsDirectory)\Extracted"
-    Expand-Archive -Path $zipPath -DestinationPath $extractPath
-  displayName: 'Unzip WebApp.zip'
-
-- powershell: |
-    $sourcePath = '$(System.ArtifactsDirectory)\Extracted\Content\D_C\a\1\s\Paperless\obj\Release\net7.0\PubTmp\Out'
-    $destPath = '$(System.ArtifactsDirectory)\Test'
-    Copy-Item -Path $sourcePath -Destination $destPath -Recurse -Force
-  displayName: 'Copy Files from Source to Destination'
-
-- powershell: |
-    $zipPath = "$(System.ArtifactsDirectory)\WebApp.zip"
-    if (Test-Path $zipPath) {
-        Remove-Item -Path $zipPath -Force
-    }
-  displayName: 'Remove WebApp.zip'
-
-- powershell: |
-    $sourceDirectory = "$(System.ArtifactsDirectory)\Test"
-    $destinationZipFile = "$(System.ArtifactsDirectory)\WebApp.zip"
-    Add-Type -Assembly "System.IO.Compression.FileSystem"
-    [System.IO.Compression.ZipFile]::CreateFromDirectory($sourceDirectory, $destinationZipFile)
-  displayName: 'Rezip lol'
 
 - task: AzureRmWebAppDeployment@4
   inputs:
