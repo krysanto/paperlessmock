@@ -28,8 +28,8 @@ steps:
     arguments: '--configuration $(buildConfiguration) --output $(build.artifactStagingDirectory) --self-contained true'
     zipAfterPublish: true
 
-#- task: PublishPipelineArtifact@1
-#  inputs:
-#    targetPath: '$(Build.ArtifactStagingDirectory)'
-#    artifact: 'Paperless'
-#    publishLocation: 'pipeline'
+- task: PublishPipelineArtifact@1
+  inputs:
+    targetPath: '$(Build.ArtifactStagingDirectory)'
+    artifact: 'Paperless'
+    publishLocation: 'pipeline'
