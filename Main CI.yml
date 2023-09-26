@@ -25,7 +25,7 @@ steps:
   inputs:
     command: 'publish'
     publishWebProjects: true
-    arguments: '--configuration $(buildConfiguration) --output $(build.artifactStagingDirectory) --self-contained true'
+    arguments: '--configuration $(buildConfiguration) --output $(build.artifactStagingDirectory)'
     zipAfterPublish: true
 
 - task: PublishPipelineArtifact@1
