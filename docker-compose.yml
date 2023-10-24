@@ -75,6 +75,8 @@ services:
       context: ./PaperlessRest
       dockerfile: src/NPaperless.Services/Dockerfile
     image: napaperlessservices
+    ports:
+      - "8080:8080"
 
 volumes:
   data:
