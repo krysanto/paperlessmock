@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
 using FizzWare.NBuilder;
 using AutoMapper;
-using Mock_Server.Models;
 using Paperless.sl.Models;
 
 namespace Paperless.sl.Controllers;
