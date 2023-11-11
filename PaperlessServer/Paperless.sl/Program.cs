@@ -82,7 +82,7 @@ internal class Program
             app.UseRouteDebugger();
         }
 
-        // app.UseHttpsRedirection();
+        //app.UseHttpsRedirection();
 
         app.UseAuthorization();
 

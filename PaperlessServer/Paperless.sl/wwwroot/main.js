@@ -23041,7 +23041,7 @@ const environment = {
   apiVersion: '2',
   appTitle: 'Paperless-ngx',
   version: 'DEVELOPMENT',
-  webSocketHost: 'https://localhost:8081',
+  webSocketHost: 'localhost:8081',
   webSocketProtocol: 'ws:',
   webSocketBaseUrl: '/ws/'
 };
