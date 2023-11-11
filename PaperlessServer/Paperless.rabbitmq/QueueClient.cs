@@ -1,7 +1,7 @@
 ﻿using RabbitMQ.Client;
 using RabbitMQ.Client.Events;
 
-namespace Paperless.rabbitmq;
+namespace Paperless.rabbitmq
 {
     public abstract class QueueClient : IDisposable
     {

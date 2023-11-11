@@ -100,6 +100,15 @@ namespace Paperless.rest
                 });
             services
                 .AddSwaggerGenNewtonsoftSupport();
+            services.AddCors(options =>
+            {
+                options.AddPolicy("MyCorsPolicy", builder =>
+                {
+                    builder.WithOrigins("https://localhost:8081")
+                           .AllowAnyHeader()
+                           .AllowAnyMethod();
+                });
+            });
         }
 
         /// <summary>
@@ -117,6 +126,7 @@ namespace Paperless.rest
             {
                 app.UseHsts();
             }
+            app.UseCors("MyCorsPolicy");
 
             app.UseHttpsRedirection();
             app.UseDefaultFiles();

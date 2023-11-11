@@ -23037,11 +23037,11 @@ __webpack_require__.r(__webpack_exports__);
 // The list of file replacements can be found in `angular.json`.
 const environment = {
   production: false,
-  apiBaseUrl: 'http://localhost:8000/api/',
+  apiBaseUrl: 'http://localhost:8081/api/',
   apiVersion: '2',
   appTitle: 'Paperless-ngx',
   version: 'DEVELOPMENT',
-  webSocketHost: 'localhost:8000',
+  webSocketHost: 'https://localhost:8081',
   webSocketProtocol: 'ws:',
   webSocketBaseUrl: '/ws/'
 };
