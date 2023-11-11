@@ -5,6 +5,8 @@ VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paperless.sl", "Paperless.sl\Paperless.sl.csproj", "{16C5BDFA-CB13-498F-B6BA-3F9C55C5C192}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paperless.rest", "Paperless.rest\Paperless.rest.csproj", "{91732B4F-2F1B-40EE-8570-C98BF74D2FEF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{16C5BDFA-CB13-498F-B6BA-3F9C55C5C192}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{16C5BDFA-CB13-498F-B6BA-3F9C55C5C192}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{16C5BDFA-CB13-498F-B6BA-3F9C55C5C192}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91732B4F-2F1B-40EE-8570-C98BF74D2FEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91732B4F-2F1B-40EE-8570-C98BF74D2FEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91732B4F-2F1B-40EE-8570-C98BF74D2FEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91732B4F-2F1B-40EE-8570-C98BF74D2FEF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
