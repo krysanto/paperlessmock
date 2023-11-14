@@ -104,7 +104,7 @@ namespace Paperless.rest
             {
                 options.AddPolicy("MyCorsPolicy", builder =>
                 {
-                    builder.WithOrigins("https://localhost:8081")
+                    builder.AllowAnyOrigin()
                            .AllowAnyHeader()
                            .AllowAnyMethod();
                 });

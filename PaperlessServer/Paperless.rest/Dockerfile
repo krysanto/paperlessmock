@@ -3,19 +3,19 @@
 # Container we use for final publish
 FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim AS base
 WORKDIR /app
-EXPOSE 80
-EXPOSE 443
+EXPOSE 8000
+EXPOSE 8001
 
 # Build container
 FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build
 
 # Copy the code into the container
 WORKDIR /src
-COPY ["src/Paperless.rest/Paperless.rest.csproj", "Paperless.rest/"]
+COPY ["Paperless.rest/Paperless.rest.csproj", "Paperless.rest/"]
 
 # NuGet restore
 RUN dotnet restore "Paperless.rest/Paperless.rest.csproj"
-COPY ["src/Paperless.rest/", "Paperless.rest/"]
+COPY ["Paperless.rest/", "Paperless.rest/"]
 
 # Build the API
 WORKDIR "Paperless.rest"

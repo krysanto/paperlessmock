@@ -13,15 +13,15 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        // builder.Services.AddCors(options =>
-        // {
-        //     options.AddDefaultPolicy(builder =>
-        //     {
-        //         builder.AllowAnyOrigin()
-        //                .AllowAnyMethod()
-        //                .AllowAnyHeader();
-        //     });
-        // });
+        builder.Services.AddCors(options =>
+        {
+            options.AddDefaultPolicy(builder =>
+            {
+                builder.AllowAnyOrigin()
+                       .AllowAnyMethod()
+                       .AllowAnyHeader();
+            });
+        });
 
         builder.Services.AddSpaStaticFiles(configuration =>
         {
@@ -61,6 +61,8 @@ internal class Program
         //     return next();
         // });
 
+
+
         app.UseWebSockets();
 
         app.UseRouting();
@@ -82,7 +84,7 @@ internal class Program
             app.UseRouteDebugger();
         }
 
-        //app.UseHttpsRedirection();
+        app.UseHttpsRedirection();
 
         app.UseAuthorization();
 
