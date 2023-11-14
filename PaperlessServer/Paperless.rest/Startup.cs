@@ -128,7 +128,7 @@ namespace Paperless.rest
             }
             app.UseCors("MyCorsPolicy");
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseSwagger(c =>
