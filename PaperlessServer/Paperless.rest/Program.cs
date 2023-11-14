@@ -27,7 +27,7 @@ namespace Paperless.rest
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
-                              .UseUrls("https://0.0.0.0:8001/");
+                              .UseUrls("http://0.0.0.0:8000/");
                 });
     }
 }
