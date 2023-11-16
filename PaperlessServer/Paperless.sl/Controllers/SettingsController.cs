@@ -42,6 +42,7 @@ public partial class LogsController : ControllerBase
 }
 
 [ApiController]
+[Route("/api/ui_settings")]
 public partial class SettingsController : ControllerBase
 {
     [HttpGet("/api/ui_settings/", Name = "GetUISettings")]

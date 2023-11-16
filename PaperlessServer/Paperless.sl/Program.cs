@@ -13,16 +13,6 @@ internal class Program
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
 
-        builder.Services.AddCors(options =>
-        {
-            options.AddDefaultPolicy(builder =>
-            {
-                builder.AllowAnyOrigin()
-                       .AllowAnyMethod()
-                       .AllowAnyHeader();
-            });
-        });
-
         builder.Services.AddSpaStaticFiles(configuration =>
         {
             configuration.RootPath = "wwwroot";
@@ -49,8 +39,6 @@ internal class Program
         });
 
         var app = builder.Build();
-
-        app.UseCors();
 
         // app.Use((context, next) =>
         // {

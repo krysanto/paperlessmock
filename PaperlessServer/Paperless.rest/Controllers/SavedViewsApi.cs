@@ -1,19 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Paperless.rest.Attributes;
-using System;
 
 namespace Paperless.rest.Controllers
 {
     [ApiController]
-    public class SettingsApi : ControllerBase
+    public class SavedViewsApi : ControllerBase
     {
         /// <summary>
         /// 
         /// </summary>
         /// <response code="200">Success</response>
         [HttpGet]
-        [Route("/api/ui_settings/")]
+        [Route("/api/saved_views/")]
         [Consumes("application/json", "text/json", "application/*+json")]
         [ValidateModelState]
         public virtual IActionResult GetUISettings()

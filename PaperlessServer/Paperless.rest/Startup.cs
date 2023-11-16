@@ -52,7 +52,15 @@ namespace Paperless.rest
         /// <param name="services"></param>
         public void ConfigureServices(IServiceCollection services)
         {
-
+            services.AddCors(options =>
+            {
+                options.AddPolicy("CorsPolicy",
+                    builder => builder
+                        .AllowAnyMethod()
+                        .AllowCredentials()
+                        .SetIsOriginAllowed((host) => true)
+                        .AllowAnyHeader());
+            });
             // Add framework services.
             services
                 // Don't need the full MVC stack for an API, see https://andrewlock.net/comparing-startup-between-the-asp-net-core-3-templates/
@@ -100,15 +108,6 @@ namespace Paperless.rest
                 });
             services
                 .AddSwaggerGenNewtonsoftSupport();
-            services.AddCors(options =>
-            {
-                options.AddPolicy("MyCorsPolicy", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyHeader()
-                           .AllowAnyMethod();
-                });
-            });
         }
 
         /// <summary>
@@ -118,6 +117,7 @@ namespace Paperless.rest
         /// <param name="env"></param>
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
+            app.UseCors("CorsPolicy");
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
@@ -126,7 +126,6 @@ namespace Paperless.rest
             {
                 app.UseHsts();
             }
-            app.UseCors("MyCorsPolicy");
 
             //app.UseHttpsRedirection();
             app.UseDefaultFiles();
