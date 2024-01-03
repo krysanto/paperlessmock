@@ -1,20 +1,22 @@
 #See https://aka.ms/containerfastmode to understand how Visual Studio uses this Dockerfile to build your images for faster debugging.
 
 # Container we use for final publish
-FROM mcr.microsoft.com/dotnet/aspnet:6.0-bullseye-slim AS base
+FROM mcr.microsoft.com/dotnet/aspnet:7.0-bullseye-slim AS base
 WORKDIR /app
 EXPOSE 8000
 
 # Build container
-FROM mcr.microsoft.com/dotnet/sdk:6.0-bullseye-slim AS build
+FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim AS build
 
 # Copy the code into the container
 WORKDIR /src
 COPY ["Paperless.rest/Paperless.rest.csproj", "Paperless.rest/"]
+COPY ["Paperless.rabbitmq/Paperless.rabbitmq.csproj", "Paperless.rabbitmq/"]
 
 # NuGet restore
 RUN dotnet restore "Paperless.rest/Paperless.rest.csproj"
 COPY ["Paperless.rest/", "Paperless.rest/"]
+COPY ["Paperless.rabbitmq/", "Paperless.rabbitmq/"]
 
 # Build the API
 WORKDIR "Paperless.rest"
