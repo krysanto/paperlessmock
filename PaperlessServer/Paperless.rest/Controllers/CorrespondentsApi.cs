@@ -19,6 +19,8 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Newtonsoft.Json;
 using Paperless.rest.Attributes;
 using Paperless.rest.Models;
+using Microsoft.Extensions.Logging;
+using Paperless.rabbitmq;
 
 namespace Paperless.rest.Controllers
 {
@@ -28,6 +30,15 @@ namespace Paperless.rest.Controllers
     [ApiController]
     public class CorrespondentsApiController : ControllerBase
     {
+        private readonly IQueueProducer _queueProducer;
+        private readonly ILogger _logger;
+
+        public CorrespondentsApiController(IQueueProducer queueProducer, ILogger logger) 
+        {
+            _queueProducer = queueProducer;
+            _logger = logger;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -40,11 +51,11 @@ namespace Paperless.rest.Controllers
         [SwaggerOperation("CreateCorrespondent")]
         public virtual IActionResult CreateCorrespondent([FromBody] NewCorrespondent newCorrespondent)
         {
+            Guid correspondentId = Guid.NewGuid();
+            
+            _queueProducer.Send("Test", correspondentId);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
             return StatusCode(200);
-
-            //throw new NotImplementedException();
         }
 
         /// <summary>

@@ -24,6 +24,8 @@ using Paperless.rest.Authentication;
 using Paperless.rest.Formatters;
 using Paperless.rest.Filters;
 using Paperless.rest.OpenApi;
+using Paperless.rabbitmq;
+using Microsoft.Extensions.Options;
 
 namespace Paperless.rest
 {
@@ -119,6 +121,10 @@ namespace Paperless.rest
                            .AllowAnyMethod();
                 });
             });
+            services.Configure<QueueOptions>(Configuration.GetSection("Queue"));
+            services.AddSingleton<QueueOptions>(sp =>
+                sp.GetRequiredService<IOptions<QueueOptions>>().Value);
+            services.AddSingleton<IQueueProducer, QueueProducer>();
         }
 
         /// <summary>

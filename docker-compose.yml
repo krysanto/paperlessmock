@@ -57,12 +57,16 @@ services:
       POSTGRES_DB: paperless
       POSTGRES_USER: paperless
       POSTGRES_PASSWORD: paperless
+    networks:
+      - paperlessnetwork
 
   rabbitmq:
     image: rabbitmq:3.9.29-management-alpine
     ports:
       - 5672:5672
       - 15672:15672
+    networks:
+      - paperlessnetwork
 
 volumes:
   data:
