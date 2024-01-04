@@ -47,6 +47,15 @@ services:
       - "8000:8000"
     networks:
       - paperlessnetwork
+
+  services:
+    build:
+      context: ./PaperlessServer
+      dockerfile: Paperless.services/Dockerfile
+    ports:
+      - "8001:8001"
+    networks:
+      - paperlessnetwork
   
   db:
     image: docker.io/library/postgres:15
