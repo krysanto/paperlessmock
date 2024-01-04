@@ -7,6 +7,7 @@ EXPOSE 8001
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Paperless.services/Paperless.services.csproj", "Paperless.services/"]
+COPY ["Paperless.rabbitmq/Paperless.rabbitmq.csproj", "Paperless.rabbitmq/"]
 RUN dotnet restore "Paperless.services/Paperless.services.csproj"
 COPY . .
 WORKDIR "/src/Paperless.services"
