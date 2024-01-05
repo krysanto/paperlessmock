@@ -4,10 +4,20 @@ FROM mcr.microsoft.com/dotnet/aspnet:7.0 AS base
 WORKDIR /app
 EXPOSE 8001
 
+RUN apt-get update && apt-get install -y \
+    imagemagick \
+    ghostscript
+
 FROM mcr.microsoft.com/dotnet/sdk:7.0 AS build
 WORKDIR /src
 COPY ["Paperless.services/Paperless.services.csproj", "Paperless.services/"]
 COPY ["Paperless.rabbitmq/Paperless.rabbitmq.csproj", "Paperless.rabbitmq/"]
+COPY ["Paperless.OCR/Paperless.OCR.csproj", "Paperless.OCR/"]
+
+RUN apt-get update && apt-get install -y \
+    imagemagick \
+    ghostscript
+
 RUN dotnet restore "Paperless.services/Paperless.services.csproj"
 COPY . .
 WORKDIR "/src/Paperless.services"

@@ -33,7 +33,7 @@ namespace Paperless.rest.Controllers
     {
         private readonly IQueueProducer _queueProducer;
         private readonly ILogger<CorrespondentsApiController> _logger;
-        private readonly DbContext _context;
+        private readonly DefaultDbContext _context;
 
         public CorrespondentsApiController(IQueueProducer queueProducer, ILogger<CorrespondentsApiController> logger, DefaultDbContext context) 
         {
