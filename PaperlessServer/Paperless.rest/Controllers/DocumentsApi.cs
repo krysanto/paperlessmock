@@ -19,6 +19,9 @@ using Swashbuckle.AspNetCore.SwaggerGen;
 using Newtonsoft.Json;
 using Paperless.rest.Attributes;
 using Paperless.rest.Models;
+using Microsoft.Extensions.Logging;
+using Paperless.rabbitmq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Paperless.rest.Controllers
 {
@@ -28,6 +31,16 @@ namespace Paperless.rest.Controllers
     [ApiController]
     public class DocumentsApiController : ControllerBase
     {
+        private readonly IQueueProducer _queueProducer;
+        private readonly ILogger<DocumentsApiController> _logger;
+        private readonly DefaultDbContext _context;
+
+        public DocumentsApiController(IQueueProducer queueProducer, ILogger<DocumentsApiController> logger, DefaultDbContext context)
+        {
+            _queueProducer = queueProducer;
+            _logger = logger;
+            _context = context;
+        }
         /// <summary>
         /// 
         /// </summary>
@@ -181,11 +194,16 @@ namespace Paperless.rest.Controllers
         [SwaggerOperation("UploadDocument")]
         public virtual IActionResult UploadDocument([FromForm(Name = "title")] string title, [FromForm(Name = "created")] DateTime? created, [FromForm(Name = "document_type")] int? documentType, [FromForm(Name = "tags")] List<int> tags, [FromForm(Name = "correspondent")] int? correspondent, [FromForm(Name = "document")] List<System.IO.Stream> document)
         {
+            _logger.LogInformation("Post Document");
+            Guid correspondentId = Guid.NewGuid();
+            _queueProducer.Send("Test", correspondentId);
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+            Document testi = new();
 
-            throw new NotImplementedException();
+            _context.Add(testi);
+            _context.SaveChanges();
+
+            return StatusCode(200);
         }
     }
 }

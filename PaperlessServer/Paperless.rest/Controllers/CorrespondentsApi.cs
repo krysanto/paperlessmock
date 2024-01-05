@@ -21,6 +21,7 @@ using Paperless.rest.Attributes;
 using Paperless.rest.Models;
 using Microsoft.Extensions.Logging;
 using Paperless.rabbitmq;
+using Microsoft.EntityFrameworkCore;
 
 namespace Paperless.rest.Controllers
 {
@@ -31,12 +32,14 @@ namespace Paperless.rest.Controllers
     public class CorrespondentsApiController : ControllerBase
     {
         private readonly IQueueProducer _queueProducer;
-        private readonly ILogger _logger;
+        private readonly ILogger<CorrespondentsApiController> _logger;
+        private readonly DbContext _context;
 
-        public CorrespondentsApiController(IQueueProducer queueProducer, ILogger logger) 
+        public CorrespondentsApiController(IQueueProducer queueProducer, ILogger<CorrespondentsApiController> logger, DefaultDbContext context) 
         {
             _queueProducer = queueProducer;
             _logger = logger;
+            _context = context;
         }
 
         /// <summary>

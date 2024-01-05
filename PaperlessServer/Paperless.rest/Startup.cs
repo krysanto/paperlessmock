@@ -26,6 +26,7 @@ using Paperless.rest.Filters;
 using Paperless.rest.OpenApi;
 using Paperless.rabbitmq;
 using Microsoft.Extensions.Options;
+using Microsoft.EntityFrameworkCore;
 
 namespace Paperless.rest
 {
@@ -112,15 +113,11 @@ namespace Paperless.rest
                 });
             services
                 .AddSwaggerGenNewtonsoftSupport();
-            services.AddCors(options =>
-            {
-                options.AddPolicy("MyCorsPolicy", builder =>
-                {
-                    builder.AllowAnyOrigin()
-                           .AllowAnyHeader()
-                           .AllowAnyMethod();
-                });
-            });
+            services.AddLogging();
+            services.AddDbContext<DefaultDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+
             services.Configure<QueueOptions>(Configuration.GetSection("Queue"));
             services.AddSingleton<QueueOptions>(sp =>
                 sp.GetRequiredService<IOptions<QueueOptions>>().Value);

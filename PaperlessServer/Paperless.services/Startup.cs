@@ -24,6 +24,7 @@ using Paperless.rabbitmq;
 using Microsoft.Extensions.Options;
 using Paperless.services.Formatters;
 using Paperless.services;
+using Microsoft.EntityFrameworkCore;
 
 namespace Paperless.rest
 {
@@ -87,6 +88,11 @@ namespace Paperless.rest
                            .AllowAnyMethod();
                 });
             });
+            services.AddLogging();
+            services.AddDbContext<DefaultDbContext>(options =>
+                options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
+
+
             services.Configure<QueueOptions>(Configuration.GetSection("Queue"));
             services.AddSingleton<QueueOptions>(sp =>
                 sp.GetRequiredService<IOptions<QueueOptions>>().Value);
