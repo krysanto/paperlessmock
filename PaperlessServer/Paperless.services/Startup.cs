@@ -97,6 +97,7 @@ namespace Paperless.rest
             services.AddSingleton<QueueOptions>(sp =>
                 sp.GetRequiredService<IOptions<QueueOptions>>().Value);
             services.AddSingleton<IQueueConsumer, QueueConsumer>();
+            services.AddSingleton<IHostedService, HostedService>();
         }
 
         /// <summary>

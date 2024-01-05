@@ -22,30 +22,21 @@ namespace Paperless.rest
 
         public static void Main(string[] args)
         {
+            Thread.Sleep(10000);
+            CreateHostBuilder(args).Build().Run();      
+        }
+
+        public static IHostBuilder CreateHostBuilder(string[] args) =>
             Host.CreateDefaultBuilder(args)
                 .ConfigureWebHostDefaults(webBuilder =>
                 {
                     webBuilder.UseStartup<Startup>()
                               .UseUrls("http://0.0.0.0:8001/")
                     .ConfigureServices((hostContext, services) =>
-                     {
-                         services.AddHostedService<HostedService>();
-                         // ... other registrations
-                     });
+                    {
+                        services.AddHostedService<HostedService>();
+                        // ... other registrations
+                    });
                 });
-        }
     }
 }
-
-
-/*
-
-Host.CreateDefaultBuilder(args)
-                .ConfigureServices((hostContext, services) =>
-                {
-                    services.AddHostedService<HostedService>();
-                    // ... other registrations
-                })
-                .Build()
-                .Run();
-*/

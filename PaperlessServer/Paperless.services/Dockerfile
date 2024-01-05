@@ -13,18 +13,22 @@ WORKDIR /src
 COPY ["Paperless.services/Paperless.services.csproj", "Paperless.services/"]
 COPY ["Paperless.rabbitmq/Paperless.rabbitmq.csproj", "Paperless.rabbitmq/"]
 COPY ["Paperless.OCR/Paperless.OCR.csproj", "Paperless.OCR/"]
+COPY ["Paperless.FileIO/Paperless.FileIO.csproj", "Paperless.FileIO/"]
 
 RUN apt-get update && apt-get install -y \
     imagemagick \
     ghostscript
 
 RUN dotnet restore "Paperless.services/Paperless.services.csproj"
-COPY . .
-WORKDIR "/src/Paperless.services"
+COPY ["Paperless.services/", "Paperless.services/"]
+COPY ["Paperless.rabbitmq/", "Paperless.rabbitmq/"]
+COPY ["Paperless.OCR/", "Paperless.OCR/"]
+COPY ["Paperless.FileIO/", "Paperless.FileIO/"]
+WORKDIR "Paperless.services"
 RUN dotnet build "Paperless.services.csproj" -c Release -o /app/build
 
 FROM build AS publish
-RUN dotnet publish "Paperless.services.csproj" -c Release -o /app/publish /p:UseAppHost=false
+RUN dotnet publish "Paperless.services.csproj" -c Release -o /app/publish
 
 FROM base AS final
 WORKDIR /app
