@@ -27,6 +27,9 @@ using Paperless.rest.OpenApi;
 using Paperless.rabbitmq;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
+using Paperless.FileIO;
+using Microsoft.AspNetCore.Mvc;
+using Paperless.FileIO.Controllers;
 
 namespace Paperless.rest
 {
@@ -117,11 +120,17 @@ namespace Paperless.rest
             services.AddDbContext<DefaultDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.Configure<FileStorageServiceOptions>(
+                    Configuration.GetSection(FileStorageServiceOptions.FileStorage));
+            services.Configure<FileStorageServiceOptions>(Configuration.GetSection("FileStorageService"));
+            services.AddScoped<FilesApi>();
+
 
             services.Configure<QueueOptions>(Configuration.GetSection("Queue"));
             services.AddSingleton<QueueOptions>(sp =>
                 sp.GetRequiredService<IOptions<QueueOptions>>().Value);
             services.AddSingleton<IQueueProducer, QueueProducer>();
+            
         }
 
         /// <summary>

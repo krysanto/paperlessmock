@@ -22,6 +22,7 @@ using Paperless.rest.Models;
 using Microsoft.Extensions.Logging;
 using Paperless.rabbitmq;
 using Microsoft.EntityFrameworkCore;
+using Paperless.FileIO.Controllers;
 
 namespace Paperless.rest.Controllers
 {
@@ -34,12 +35,14 @@ namespace Paperless.rest.Controllers
         private readonly IQueueProducer _queueProducer;
         private readonly ILogger<DocumentsApiController> _logger;
         private readonly DefaultDbContext _context;
+        private readonly FilesApi _filesApi;
 
-        public DocumentsApiController(IQueueProducer queueProducer, ILogger<DocumentsApiController> logger, DefaultDbContext context)
+        public DocumentsApiController(IQueueProducer queueProducer, ILogger<DocumentsApiController> logger, DefaultDbContext context, FilesApi filesApi)
         {
             _queueProducer = queueProducer;
             _logger = logger;
             _context = context;
+            _filesApi = filesApi;
         }
         /// <summary>
         /// 
@@ -199,6 +202,7 @@ namespace Paperless.rest.Controllers
             _queueProducer.Send("Test", correspondentId);
 
             Document testi = new();
+            //_filesApi.UploadFile("/",testi);
 
             _context.Add(testi);
             _context.SaveChanges();

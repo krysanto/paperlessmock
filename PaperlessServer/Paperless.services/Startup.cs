@@ -25,6 +25,9 @@ using Microsoft.Extensions.Options;
 using Paperless.services.Formatters;
 using Paperless.services;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc;
+using Paperless.FileIO;
+using Paperless.FileIO.Controllers;
 
 namespace Paperless.rest
 {
@@ -92,6 +95,10 @@ namespace Paperless.rest
             services.AddDbContext<DefaultDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
+            services.Configure<FileStorageServiceOptions>(
+                    Configuration.GetSection(FileStorageServiceOptions.FileStorage));
+            services.Configure<FileStorageServiceOptions>(Configuration.GetSection("FileStorageService"));
+            services.AddScoped<FilesApi>();
 
             services.Configure<QueueOptions>(Configuration.GetSection("Queue"));
             services.AddSingleton<QueueOptions>(sp =>
