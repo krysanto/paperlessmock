@@ -126,14 +126,10 @@ namespace Paperless.rest
             services.AddSingleton<IQueueProducer, QueueProducer>();
 
             var minioConfig = Configuration.GetSection("MinioConfig").Get<MinioConfig>();
-            //services.AddMinio(minioConfig.AccessKey, minioConfig.SecretKey);
             var minioClient = new MinioClient()
                       .WithEndpoint(minioConfig.Endpoint)
                       .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
                       .Build();
-            //services.AddMinio(configureClient => configureClient
-            //    .WithEndpoint(minioConfig.Endpoint)
-            //    .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey));
             services.AddSingleton<IMinioClient>(minioClient);
 
         }

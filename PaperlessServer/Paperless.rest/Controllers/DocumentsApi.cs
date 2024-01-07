@@ -206,7 +206,6 @@ namespace Paperless.rest.Controllers
             _logger.LogInformation("Post Document");
             Guid correspondentId = Guid.NewGuid();
             _queueProducer.Send("Test", correspondentId);
-            await _context.Database.EnsureCreatedAsync();
 
             Document testi = new();
             testi.Title = "test";
