@@ -12,13 +12,11 @@ FROM mcr.microsoft.com/dotnet/sdk:7.0-bullseye-slim AS build
 WORKDIR /src
 COPY ["Paperless.rest/Paperless.rest.csproj", "Paperless.rest/"]
 COPY ["Paperless.rabbitmq/Paperless.rabbitmq.csproj", "Paperless.rabbitmq/"]
-COPY ["Paperless.FileIO/Paperless.FileIO.csproj", "Paperless.FileIO/"]
 
 # NuGet restore
 RUN dotnet restore "Paperless.rest/Paperless.rest.csproj"
 COPY ["Paperless.rest/", "Paperless.rest/"]
 COPY ["Paperless.rabbitmq/", "Paperless.rabbitmq/"]
-COPY ["Paperless.FileIO/", "Paperless.FileIO/"]
 
 # Build the API
 WORKDIR "Paperless.rest"

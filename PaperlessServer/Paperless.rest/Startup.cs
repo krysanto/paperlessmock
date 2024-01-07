@@ -27,9 +27,8 @@ using Paperless.rest.OpenApi;
 using Paperless.rabbitmq;
 using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
-using Paperless.FileIO;
 using Microsoft.AspNetCore.Mvc;
-using Paperless.FileIO.Controllers;
+using Minio;
 
 namespace Paperless.rest
 {
@@ -120,17 +119,23 @@ namespace Paperless.rest
             services.AddDbContext<DefaultDbContext>(options =>
                 options.UseNpgsql(Configuration.GetConnectionString("DefaultConnection")));
 
-            services.Configure<FileStorageServiceOptions>(
-                    Configuration.GetSection(FileStorageServiceOptions.FileStorage));
-            services.Configure<FileStorageServiceOptions>(Configuration.GetSection("FileStorageService"));
-            services.AddScoped<FilesApi>();
-
 
             services.Configure<QueueOptions>(Configuration.GetSection("Queue"));
             services.AddSingleton<QueueOptions>(sp =>
                 sp.GetRequiredService<IOptions<QueueOptions>>().Value);
             services.AddSingleton<IQueueProducer, QueueProducer>();
-            
+
+            var minioConfig = Configuration.GetSection("MinioConfig").Get<MinioConfig>();
+            //services.AddMinio(minioConfig.AccessKey, minioConfig.SecretKey);
+            var minioClient = new MinioClient()
+                      .WithEndpoint(minioConfig.Endpoint)
+                      .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
+                      .Build();
+            //services.AddMinio(configureClient => configureClient
+            //    .WithEndpoint(minioConfig.Endpoint)
+            //    .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey));
+            services.AddSingleton<IMinioClient>(minioClient);
+
         }
 
         /// <summary>

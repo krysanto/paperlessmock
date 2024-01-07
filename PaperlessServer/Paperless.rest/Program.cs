@@ -31,6 +31,8 @@ namespace Paperless.rest
                 {
                     var context = services.GetRequiredService<DefaultDbContext>();
                     context.Database.Migrate();
+                    context.Database.EnsureCreated();
+                    context.SaveChanges();
                 }
                 catch (Exception ex)
                 {
