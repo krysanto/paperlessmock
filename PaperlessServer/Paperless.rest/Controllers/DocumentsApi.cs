@@ -62,13 +62,42 @@ namespace Paperless.rest.Controllers
         [Route("/api/documents/{id}")]
         [ValidateModelState]
         [SwaggerOperation("DeleteDocument")]
-        public virtual IActionResult DeleteDocument([FromRoute(Name = "id")][Required] int id)
+        public virtual async Task<IActionResult> DeleteDocument([FromRoute(Name = "id")][Required] int id)
         {
+            try
+            {
+                var document = await _context.Documents.FindAsync(id);
+                if (document == null)
+                {
+                    _logger.LogInformation($"Document with id {id} not found.");
+                    return NotFound();
+                }
+                
+                var bucketName = "documents";
+                var uniqueFileName = document.StoragePath;
+                
+                try
+                {
+                    await _minioClient.RemoveObjectAsync(new RemoveObjectArgs()
+                        .WithBucket(bucketName)
+                        .WithObject(uniqueFileName));
+                }
+                catch (Exception ex)
+                {
+                    _logger.LogError(ex, $"Error occurred while deleting file from MinIO: {uniqueFileName}");
+                }
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+                _context.Documents.Remove(document);
+                await _context.SaveChangesAsync();
 
-            throw new NotImplementedException();
+                _logger.LogInformation($"Document with id {id} and file {uniqueFileName} deleted successfully.");
+                return Ok(StatusCode(200));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while deleting the document.");
+                return StatusCode(500, "An error occurred while deleting the document.");
+            }
         }
 
         /// <summary>
@@ -99,13 +128,24 @@ namespace Paperless.rest.Controllers
         [Route("/api/documents/{id}/metadata")]
         [ValidateModelState]
         [SwaggerOperation("GetDocumentMetadata")]
-        public virtual IActionResult GetDocumentMetadata([FromRoute(Name = "id")][Required] int id)
+        public virtual async Task<IActionResult> GetDocumentMetadata([FromRoute(Name = "id")][Required] int id)
         {
+            try
+            {
+                var document = await _context.Documents.FindAsync(id);
+                if (document == null)
+                {
+                    _logger.LogInformation($"Document with id {id} not found.");
+                    return NotFound(new { message = $"Document with id {id} not found." });
+                }
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
-
-            throw new NotImplementedException();
+                return StatusCode(200, document);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while retrieving document metadata.");
+                return StatusCode(500, "An error occurred while retrieving document metadata.");
+            }
         }
 
         /// <summary>
@@ -180,13 +220,37 @@ namespace Paperless.rest.Controllers
         [Consumes("application/json", "text/json", "application/*+json")]
         [ValidateModelState]
         [SwaggerOperation("UpdateDocument")]
-        public virtual IActionResult UpdateDocument([FromRoute(Name = "id")][Required] int id, [FromBody] Document document)
+        public virtual async Task<IActionResult> UpdateDocument([FromRoute(Name = "id")][Required] int id, [FromBody] Document document)
         {
+            if (document == null)
+            {
+                return BadRequest("Document data is null.");
+            }
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
-            // return StatusCode(200);
+            try
+            {
+                var existingDocument = await _context.Documents.FindAsync(id);
+                if (existingDocument == null)
+                {
+                    return NotFound($"Document with id {id} not found.");
+                }
 
-            throw new NotImplementedException();
+                existingDocument.DocumentType = document.DocumentType;
+                existingDocument.Title = document.Title;
+                existingDocument.Content = document.Content;
+                existingDocument.Created = document.Created;
+                existingDocument.Modified = document.Modified;
+
+                _context.Documents.Update(existingDocument);
+                await _context.SaveChangesAsync();
+                
+                return StatusCode(200, "Document updated successfully.");
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while updating the document.");
+                return StatusCode(500, "An error occurred while updating the document.");
+            }
         }
 
         /// <summary>
@@ -241,6 +305,7 @@ namespace Paperless.rest.Controllers
                     Created = created ?? DateTime.UtcNow,
                     Modified = DateTime.UtcNow,
                     StoragePath = uniqueFileName,
+                    Content = "To Be Updated by OCR",
                 };
 
                 _context.Documents.Add(metaData);
