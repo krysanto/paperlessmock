@@ -47,18 +47,25 @@ public class ElasticSearchIndex : ISearchIndex
             <= 5 => "1",
             _ => "2"
         };
+        /*
+                var searchResponse = await elasticClient.SearchAsync<Document>(s => s
+                    .Index("documents")
+                    .Size(limit ?? 10)
+                    .Query(q => q
+                        .Fuzzy(fz => fz
+                            .Field(f => f.Content)
+                            .Value(searchTerm)
+                            .Fuzziness(Fuzziness.Auto)
+                        )
+                    )
+                );
+        */
 
-        var searchResponse = await elasticClient.SearchAsync<Document>(s => s
+        var searchResponse = elasticClient.Search<Document>(s => s
             .Index("documents")
-            .Size(limit ?? 10)
-            .Query(q => q
-                .Fuzzy(fz => fz
-                    .Field(f => f.Content)
-                    .Value(searchTerm)
-                    .Fuzziness((Fuzziness?)fuzzinessLevel)
-                )
-            )
+            .Query(q => q.QueryString(qs => qs.DefaultField(p => p.Content).Query($"*{searchTerm}*")))
         );
+
 
         if (!searchResponse.IsSuccess())
         {
