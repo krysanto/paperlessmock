@@ -22,7 +22,7 @@ namespace Paperless.rest
 
         public static void Main(string[] args)
         {
-            Thread.Sleep(10000);
+            Thread.Sleep(17500);
             CreateHostBuilder(args).Build().Run();      
         }
 
