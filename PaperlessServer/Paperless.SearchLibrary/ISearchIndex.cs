@@ -1,4 +1,4 @@
-namespace NPaperless.SearchLibrary;
+namespace Paperless.SearchLibrary;
 
 public interface ISearchIndex
 {

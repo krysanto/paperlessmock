@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paperless.OCR", "Paperless.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paperless.Migrations", "Paperless.Migrations\Paperless.Migrations.csproj", "{03593778-0F17-4AF7-94A8-E3B00A96AF09}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paperless.SearchLibrary", "Paperless.SearchLibrary\Paperless.SearchLibrary.csproj", "{429088ED-3C20-4D16-99CF-495D32D0409A}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{03593778-0F17-4AF7-94A8-E3B00A96AF09}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03593778-0F17-4AF7-94A8-E3B00A96AF09}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03593778-0F17-4AF7-94A8-E3B00A96AF09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{429088ED-3C20-4D16-99CF-495D32D0409A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{429088ED-3C20-4D16-99CF-495D32D0409A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{429088ED-3C20-4D16-99CF-495D32D0409A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{429088ED-3C20-4D16-99CF-495D32D0409A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

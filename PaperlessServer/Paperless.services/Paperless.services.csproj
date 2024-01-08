@@ -23,6 +23,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Paperless.OCR\Paperless.OCR.csproj" />
     <ProjectReference Include="..\Paperless.rabbitmq\Paperless.rabbitmq.csproj" />
+    <ProjectReference Include="..\Paperless.SearchLibrary\Paperless.SearchLibrary.csproj" />
   </ItemGroup>
 
   <ItemGroup>

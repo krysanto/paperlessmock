@@ -1,4 +1,4 @@
-namespace NPaperless.SearchLibrary
+namespace Paperless.SearchLibrary
 {
     public class Document
     {
