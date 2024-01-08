@@ -27,6 +27,7 @@ using Paperless.services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Minio;
+using Paperless.OCR;
 
 namespace Paperless.rest
 {
@@ -106,6 +107,9 @@ namespace Paperless.rest
                       .WithCredentials(minioConfig.AccessKey, minioConfig.SecretKey)
                       .Build();
             services.AddSingleton<IMinioClient>(minioClient);
+
+            services.AddSingleton<OcrOptions>();
+            services.AddSingleton<IOcrClient, OcrClient>();
         }
 
         /// <summary>

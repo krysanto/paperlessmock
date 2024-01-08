@@ -25,4 +25,10 @@
     <ProjectReference Include="..\Paperless.rabbitmq\Paperless.rabbitmq.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <None Update="HelloWorld.pdf">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+  </ItemGroup>
+
 </Project>
