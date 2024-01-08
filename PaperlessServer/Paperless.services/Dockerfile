@@ -30,6 +30,7 @@ WORKDIR /src
 COPY ["Paperless.services/Paperless.services.csproj", "Paperless.services/"]
 COPY ["Paperless.rabbitmq/Paperless.rabbitmq.csproj", "Paperless.rabbitmq/"]
 COPY ["Paperless.OCR/Paperless.OCR.csproj", "Paperless.OCR/"]
+COPY ["Paperless.SearchLibrary/Paperless.SearchLibrary.csproj", "Paperless.SearchLibrary/"]
 
 RUN apt-get update && apt-get install -y \
     libleptonica-dev \
@@ -53,6 +54,7 @@ RUN dotnet restore "Paperless.services/Paperless.services.csproj"
 COPY ["Paperless.services/", "Paperless.services/"]
 COPY ["Paperless.rabbitmq/", "Paperless.rabbitmq/"]
 COPY ["Paperless.OCR/", "Paperless.OCR/"]
+COPY ["Paperless.SearchLibrary/", "Paperless.SearchLibrary/"]
 WORKDIR "Paperless.services"
 RUN dotnet build "Paperless.services.csproj" -c Release -o /app/build
 
