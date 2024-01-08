@@ -11,6 +11,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Http;
@@ -28,6 +29,8 @@ using System.Net.Mime;
 using System.Security.AccessControl;
 using CommunityToolkit.HighPerformance.Helpers;
 using System.Threading.Tasks;
+using System.Linq;
+using System.Text;
 
 namespace Paperless.rest.Controllers
 {
@@ -201,38 +204,58 @@ namespace Paperless.rest.Controllers
         [Consumes("multipart/form-data")]
         [ValidateModelState]
         [SwaggerOperation("UploadDocument")]
-        public virtual async Task<IActionResult> UploadDocument([FromForm(Name = "title")] string title, [FromForm(Name = "created")] DateTime? created, [FromForm(Name = "document_type")] int? documentType, [FromForm(Name = "tags")] List<int> tags, [FromForm(Name = "correspondent")] int? correspondent, [FromForm(Name = "document")] List<System.IO.Stream> document)
+
+        public virtual async Task<IActionResult> UploadDocument([FromForm(Name = "title")] string title, [FromForm(Name = "created")] DateTime? created, [FromForm(Name = "document_type")] int? documentType, [FromForm(Name = "tags")] List<int> tags, [FromForm(Name = "correspondent")] int? correspondent, [FromForm(Name = "document")] IFormFile document)
         {
             _logger.LogInformation("Post Document");
             Guid correspondentId = Guid.NewGuid();
-            _queueProducer.Send("Test", correspondentId);
 
-            Document testi = new();
-            testi.Title = "test";
-            testi.Content = "%PDF-1.4\r\n%����\r\n2 0 obj\r\n<</Filter/FlateDecode/Length 64>>stream\r\nx�+�r\r\n�26S�00S\bI�2P�5�";
-
-            var bucketName = "test";
-
-            //var beArgs = new BucketExistsArgs()
-            //        .WithBucket(bucketName);
-            //bool found = await _minioClient.BucketExistsAsync(beArgs).ConfigureAwait(false);
-            //if (!found)
+            try
             {
-                var mbArgs = new MakeBucketArgs()
-                    .WithBucket(bucketName);
-                await _minioClient.MakeBucketAsync(mbArgs).ConfigureAwait(false);
+                var bucketName = "documents";
+                var uniqueFileName = correspondentId + Path.GetExtension(document.FileName);
+
+                var bucketExists = await _minioClient.BucketExistsAsync(new BucketExistsArgs().WithBucket(bucketName));
+                if (!bucketExists)
+                {
+                    await _minioClient.MakeBucketAsync(new MakeBucketArgs().WithBucket(bucketName));
+                }
+
+                using (var documentStream = document.OpenReadStream())
+                {
+                    var putObjectArgs = new PutObjectArgs()
+                        .WithBucket(bucketName)
+                        .WithObject(uniqueFileName)
+                        .WithStreamData(documentStream)
+                        .WithObjectSize(document.Length)
+                        .WithContentType(document.ContentType);
+
+                    await _minioClient.PutObjectAsync(putObjectArgs);
+
+                }
+
+                var metaData = new Document
+                {
+                    DocumentType = document.ContentType,
+                    Title = Path.GetExtension(document.FileName),
+                    Created = created ?? DateTime.UtcNow,
+                    Modified = DateTime.UtcNow,
+                    StoragePath = uniqueFileName,
+                };
+
+                _context.Documents.Add(metaData);
+                await _context.SaveChangesAsync();
+
+                _logger.LogInformation($"Successfully uploaded file: {title}");
+
+                _queueProducer.Send(uniqueFileName, correspondentId);
+                _logger.LogInformation($"{title} added to OCR_QUEUE Successfully!");
             }
-
-            var putObjectArgs = new PutObjectArgs()
-                    .WithBucket(bucketName)
-                    .WithObject(testi.Content)
-                    .WithFileName("HelloWorld.pdf")
-                    .WithContentType("application/pdf");
-            await _minioClient.PutObjectAsync(putObjectArgs).ConfigureAwait(false);
-            Console.WriteLine("Successfully uploaded " + testi.Title);
-
-            //_context.Add(testi);
-            //_context.SaveChanges();
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, ex.Message);
+                return StatusCode(500, "An error occurred during file upload.");
+            }
 
             return Ok(StatusCode(200));
         }

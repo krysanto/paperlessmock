@@ -38,19 +38,12 @@ namespace Paperless.rest.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Correspondent = table.Column<int>(type: "integer", nullable: true),
-                    DocumentType = table.Column<int>(type: "integer", nullable: true),
-                    StoragePath = table.Column<int>(type: "integer", nullable: true),
+                    DocumentType = table.Column<int>(type: "text", nullable: true),
+                    StoragePath = table.Column<int>(type: "text", nullable: true),
                     Title = table.Column<string>(type: "text", nullable: true),
                     Content = table.Column<string>(type: "text", nullable: true),
-                    Tags = table.Column<List<int>>(type: "integer[]", nullable: true),
-                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    CreatedDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    Added = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
-                    ArchiveSerialNumber = table.Column<string>(type: "text", nullable: true),
-                    OriginalFileName = table.Column<string>(type: "text", nullable: true),
-                    ArchivedFileName = table.Column<string>(type: "text", nullable: true)
+                    Created = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Modified = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
