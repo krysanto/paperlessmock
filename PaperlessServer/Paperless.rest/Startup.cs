@@ -29,6 +29,7 @@ using Microsoft.Extensions.Options;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Minio;
+using Paperless.SearchLibrary;
 
 namespace Paperless.rest
 {
@@ -132,6 +133,7 @@ namespace Paperless.rest
                       .Build();
             services.AddSingleton<IMinioClient>(minioClient);
 
+            services.AddSingleton<ISearchIndex, ElasticSearchIndex>();
         }
 
         /// <summary>

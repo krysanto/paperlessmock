@@ -17,6 +17,7 @@ COPY ["Paperless.rabbitmq/Paperless.rabbitmq.csproj", "Paperless.rabbitmq/"]
 RUN dotnet restore "Paperless.rest/Paperless.rest.csproj"
 COPY ["Paperless.rest/", "Paperless.rest/"]
 COPY ["Paperless.rabbitmq/", "Paperless.rabbitmq/"]
+COPY ["Paperless.SearchLibrary/", "Paperless.SearchLibrary/"]
 
 # Build the API
 WORKDIR "Paperless.rest"

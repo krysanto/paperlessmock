@@ -1,5 +1,6 @@
 ﻿namespace Paperless.SearchLibrary;
 
+using System.Collections.Generic;
 using System.Diagnostics;
 using Elastic.Clients.Elasticsearch;
 using Elastic.Clients.Elasticsearch.QueryDsl;
@@ -21,9 +22,12 @@ public class ElasticSearchIndex : ISearchIndex
         var elasticClient = new ElasticsearchClient(_uri);
 
         if (!elasticClient.Indices.Exists("documents").Exists)
+        {
             elasticClient.Indices.Create("documents");
+        }
 
         var indexResponse = elasticClient.Index(document, "documents");
+        
         if (!indexResponse.IsSuccess())
         {
             // Handle errors
@@ -31,18 +35,36 @@ public class ElasticSearchIndex : ISearchIndex
 
             throw new Exception($"Failed to index document: {indexResponse.DebugInformation}\n{indexResponse.ElasticsearchServerError}");
         }
-
-
     }
 
-    public IEnumerable<Document> SearchDocumentAsync(string searchTerm)
+    public async Task<IEnumerable<Document>> SearchDocumentAsync(string searchTerm, int? limit)
     {
         var elasticClient = new ElasticsearchClient(_uri);
 
-        var searchResponse = elasticClient.Search<Document>(s => s
+        var fuzzinessLevel = searchTerm.Length switch
+        {
+            <= 2 => "0",
+            <= 5 => "1",
+            _ => "2"
+        };
+
+        var searchResponse = await elasticClient.SearchAsync<Document>(s => s
             .Index("documents")
-            .Query(q => q.QueryString(qs => qs.DefaultField(p => p.Content).Query($"*{searchTerm}*")))
+            .Size(limit ?? 10)
+            .Query(q => q
+                .Fuzzy(fz => fz
+                    .Field(f => f.Content)
+                    .Value(searchTerm)
+                    .Fuzziness((Fuzziness?)fuzzinessLevel)
+                )
+            )
         );
+
+        if (!searchResponse.IsSuccess())
+        {
+            _logger.LogError($"Elasticsearch search error: {searchResponse.DebugInformation}\n{searchResponse.ElasticsearchServerError}");
+            throw new Exception($"Search operation failed: {searchResponse.DebugInformation}\n{searchResponse.ElasticsearchServerError}");
+        }
 
         return searchResponse.Documents;
     }

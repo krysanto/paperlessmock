@@ -6,6 +6,7 @@ using Paperless.OCR;
 using Paperless.rabbitmq;
 using Paperless.rest;
 using Paperless.services;
+using Paperless.SearchLibrary;
 
 public class HostedService : IHostedService
 {
@@ -14,14 +15,16 @@ public class HostedService : IHostedService
     private readonly IOcrClient _ocrClient;
     private readonly IMinioClient _minioClient;
     private readonly DefaultDbContext _context;
+    private readonly ISearchIndex _elastic;
 
-    public HostedService(IQueueConsumer consumer, ILogger<HostedService> logger, IOcrClient ocrClient, IMinioClient minioClient, DefaultDbContext context)
+    public HostedService(IQueueConsumer consumer, ILogger<HostedService> logger, IOcrClient ocrClient, IMinioClient minioClient, DefaultDbContext context, ISearchIndex elastic)
     {
         _consumer = consumer;
         _logger = logger;
         _ocrClient = ocrClient;
         _minioClient = minioClient;
         _context = context;
+        _elastic = elastic;
     }
 
     public Task StartAsync(CancellationToken cancellationToken)
@@ -63,6 +66,14 @@ public class HostedService : IHostedService
                     await _context.SaveChangesAsync();
 
                     _logger.LogInformation("Document content updated in database.");
+
+                    Paperless.SearchLibrary.Document elasticDocument = new();
+                    elasticDocument.Id = document.Id;
+                    elasticDocument.Title = document.Title;
+                    elasticDocument.Content = document.Content;
+                    
+                    _elastic.AddDocumentAsync(elasticDocument);
+                    _logger.LogInformation("Document Indexed in ElasticSearch.");
                 }
                 else
                 {

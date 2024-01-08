@@ -28,6 +28,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Mvc;
 using Minio;
 using Paperless.OCR;
+using Paperless.SearchLibrary;
 
 namespace Paperless.rest
 {
@@ -110,6 +111,7 @@ namespace Paperless.rest
 
             services.AddSingleton<OcrOptions>();
             services.AddSingleton<IOcrClient, OcrClient>();
+            services.AddSingleton<ISearchIndex, ElasticSearchIndex>();
         }
 
         /// <summary>

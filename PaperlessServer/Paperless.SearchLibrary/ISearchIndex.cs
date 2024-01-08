@@ -3,7 +3,7 @@ namespace Paperless.SearchLibrary;
 public interface ISearchIndex
 {
     void AddDocumentAsync(Document doc);
-    IEnumerable<Document> SearchDocumentAsync(string searchTerm);
+    Task<IEnumerable<Document>> SearchDocumentAsync(string searchTerm, int? limit);
 }
 
 

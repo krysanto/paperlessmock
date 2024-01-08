@@ -8,7 +8,7 @@ namespace Paperless.rest.Controllers;
 [Route("/api/search/")]
 public partial class SearchController : ControllerBase
 {
-
+    /*
     [HttpGet("autocomplete/", Name = "AutoComplete")]
     public IActionResult AutoComplete([FromQuery] string term, [FromQuery] int limit)
     {
@@ -19,4 +19,5 @@ public partial class SearchController : ControllerBase
                 .Select(el => generator.Phrase(10)
         ));
     }
+    */
 }

@@ -9,16 +9,13 @@
  */
 
 using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Http;
 using Swashbuckle.AspNetCore.Annotations;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Newtonsoft.Json;
 using Paperless.rest.Attributes;
-/*
+using Microsoft.Extensions.Logging;
+using Paperless.SearchLibrary;
+using System.Threading.Tasks;
+
 namespace Paperless.rest.Controllers
 {
     /// <summary>
@@ -27,6 +24,15 @@ namespace Paperless.rest.Controllers
     [ApiController]
     public class SearchApiController : ControllerBase
     {
+        private readonly ILogger<DocumentsApiController> _logger;
+        private readonly ISearchIndex _elastic;
+
+        public SearchApiController(ILogger<DocumentsApiController> logger, ISearchIndex elastic)
+        {
+            _logger = logger;
+            _elastic = elastic;
+        }
+
         /// <summary>
         /// 
         /// </summary>
@@ -37,12 +43,24 @@ namespace Paperless.rest.Controllers
         [Route("/api/search/autocomplete")]
         [ValidateModelState]
         [SwaggerOperation("AutoComplete")]
-        public virtual IActionResult AutoComplete([FromQuery(Name = "term")] string term, [FromQuery(Name = "limit")] int? limit)
+        public virtual async Task<IActionResult> AutoComplete([FromQuery(Name = "term")] string term, [FromQuery(Name = "limit")] int? limit)
         {
+            try
+            {
+                if (string.IsNullOrWhiteSpace(term))
+                {
+                    return BadRequest("Search term is required.");
+                }
 
-            //TODO: Uncomment the next line to return response 200 or use other options such as return this.NotFound(), return this.BadRequest(..), ...
+                var results = await _elastic.SearchDocumentAsync(term, limit);
+                return Ok(results);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error occurred while performing autocomplete search.");
+                return StatusCode(500, "An error occurred during the search.");
+            }
             return StatusCode(200);
         }
     }
 }
-*/

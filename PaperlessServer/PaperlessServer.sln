@@ -4,6 +4,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 VisualStudioVersion = 17.6.33723.286
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paperless.rest", "Paperless.rest\Paperless.rest.csproj", "{91732B4F-2F1B-40EE-8570-C98BF74D2FEF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{429088ED-3C20-4D16-99CF-495D32D0409A} = {429088ED-3C20-4D16-99CF-495D32D0409A}
+	EndProjectSection
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Paperless.rabbitmq", "Paperless.rabbitmq\Paperless.rabbitmq.csproj", "{374CAA75-417A-403E-8477-5CEEE2AA09CA}"
 EndProject
